@@ -1,0 +1,16 @@
+<script>
+		// update with the desired time to refresh the presentation (in minutes)
+		var refreshMinutes = 30;
+		
+		var timer=setInterval(function(){refreshFrame()}, refreshMinutes*60*1000);
+		function refreshFrame()
+		{
+			var iframe = document.getElementById('presentFrame');
+			var iframeURL = iframe.src;
+			iframe.src = iframeURL;
+		}
+</script>
+<script src="https://fb.me/react-15.0.0.js"></script>
+<script src="https://fb.me/react-dom-15.0.0.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+<script src="/js/clock.jsx" type="text/babel"></script>
