@@ -1,2 +1,2 @@
 html, body { padding: 0; margin: 0; width: 100%; height: 100%; background: black; color: white; }
-#time { position: absolute; font-size: 90px; bottom: 40px; right: 200px; color: black;}
+#time { position: absolute; font-size: 90px; bottom: 40px; right: 10px; color: black; }
