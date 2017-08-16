@@ -1,43 +1,49 @@
 'use strict';
+require('colors');
+const express = require('express'),
+  bodyParser = require('body-parser'),
+  winston = require('winston'),
+  path = require('path'),
+  expressWinston = require('express-winston'),
 
-const
-	express = require('express'),
-	session = require('express-session'),
-	bodyParser = require('body-parser'),
-	scribe = require('scribe-js')();
+  app = express(),
+  logger = new(winston.Logger)({
+    level: 'server',
+    levels: { server: 0 },
+    colors: { server: 'green' },
+    colorize: true,
+    transports: [
+      new(winston.transports.Console)({ 'timestamp': true, 'prettyPrint': true, colorize: true })
+    ]
+  });
 
-const
-	logger = process.console,
-	app = express();
-
-const
-	ONE_SEC = 1000,
-	ONE_MIN = 60 * ONE_SEC,
-	ONE_HOUR = 60 * ONE_MIN;
-
-logger.addLogger('backend', 'cyan');
-app.set('views', __dirname + '/views');
+app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(bodyParser.json());
-app.use(scribe.express.logger(logger)); //Log each request
-app.use('/logs', scribe.webPanel());
+app.use(expressWinston.logger({
+  transports: [new winston.transports.Console({ 'timestamp': true, colorize: true })],
+  expressFormat: true,
+  meta: false,
+  colorize: true
+}));
+
 app.use(bodyParser.urlencoded({
-	extended: false
+  extended: false
 }));
 
 app.get('/', (req, res) => {
-	res.render('pages/clock');
+  res.render('pages/clock');
 });
 
 app.get('*', (req, res) => {
-	res.render('pages/error', {
-		title: '404',
-		errMsg: 'Whoops! Looks like that page got a little lost on its way to you'
-	});
+  res.render('pages/error', {
+    title: '404',
+    errMsg: 'Whoops! Looks like that page got a little lost on its way to you'
+  });
 });
 
 app.listen(1059, () => {
-	logger.time().file().info('SpotifyApps listening on port 1059!');
+  logger.server('Berkeley Clock is listening on port 1059!\n'.rainbow + 'http://localhost:1059');
 });
