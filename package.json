@@ -13,7 +13,6 @@
     "express": "^4.15.4",
     "express-session": "^1.15.5",
     "express-winston": "^2.4.0",
-    "scribe-js": "^2.0.4",
     "winston": "^2.3.1"
   },
   "devDependencies": {
